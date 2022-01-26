@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'onboarding.dart';
 
 bool condition = false;
 Duration transitionDuration = Duration(seconds: 1);
@@ -17,6 +18,13 @@ class _SplashScreenState extends State<SplashScreen> {
       setState(() {
         condition = true;
       });
+    });
+
+    Timer(Duration(seconds: 3), () {
+      Navigator.pushReplacement(context,
+          MaterialPageRoute(builder: (BuildContext context) {
+        return FlowPager();
+      }));
     });
   }
 
@@ -39,10 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 curve: Curves.fastOutSlowIn,
                 duration: transitionDuration,
                 alignment: condition ? Alignment.topCenter : Alignment.center,
-                child: Image(
-                  image: NetworkImage(
-                      'https://www.freepnglogos.com/uploads/flipkart-logo-png/flipkart-inventory-management-system-zap-inventory-1.png'),
-                ),
+                child: Image.asset("assets/flipkart.png"),
                 width: condition ? 40 : 180,
                 height: condition ? 40 : 180,
               ),

@@ -1,12 +1,20 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const items = [
+  Color(0xffF7E830),
   Color(0xff037CD5),
-  Colors.yellow,
+  Color(0xffF7E830),
   Color(0xff037CD5),
-  Colors.yellow
 ];
+
+const images = [
+  "assets/cash.png"
+      "assets/delivery.png"
+      "assets/cash.png"
+];
+const headings = ["Cash On Delivery", "Fast Delivery", "Good Customer Service"];
 
 class FlowPager extends StatefulWidget {
   @override
@@ -35,6 +43,17 @@ class _FlowPagerState extends State<FlowPager> {
 
   @override
   Widget build(BuildContext context) {
+    String imagePicker(int idx) {
+      if (idx == 0)
+        return "assets/cash.png";
+      else if (idx == 1)
+        return "assets/delivery.png";
+      else if (idx == 2)
+        return "assets/cash.png";
+      else
+        return "assets/cash.png";
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -58,16 +77,25 @@ class _FlowPagerState extends State<FlowPager> {
             itemBuilder: (c, i) => Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: const EdgeInsets.only(top: 200),
-                child: Text(
-                  'PAGE $i',
-                  style: TextStyle(
-                    fontSize: 50,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-              ),
+                  padding: const EdgeInsets.only(top: 50),
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 300,
+                        child: Image(
+                          image: AssetImage(imagePicker(i)),
+                          alignment: Alignment.bottomCenter,
+                        ),
+                      ),
+                      Text(headings[i],
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.cutiveMono(
+                            fontSize: 40,
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                          ))
+                    ],
+                  )),
             ),
           ),
 
@@ -76,7 +104,7 @@ class _FlowPagerState extends State<FlowPager> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 200),
+                padding: const EdgeInsets.only(bottom: 50),
                 child: ClipOval(
                   child: AnimatedBuilder(
                     animation: _notifier,
