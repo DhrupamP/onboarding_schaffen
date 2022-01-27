@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'onboarding.dart';
 
 bool condition = false;
-Duration transitionDuration = Duration(seconds: 1);
+Duration transitionDuration = const Duration(seconds: 1);
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -14,13 +14,13 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   void startTimer() {
-    Timer(Duration(milliseconds: 1500), () {
+    Timer(const Duration(milliseconds: 1500), () {
       setState(() {
         condition = true;
       });
     });
 
-    Timer(Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) {
         return FlowPager();
@@ -38,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Color(0xff037CD5),
+        color: const Color(0xff037CD5),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 height: condition ? 40 : 180,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 7,
             ),
             AnimatedCrossFade(
@@ -62,7 +62,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   : CrossFadeState.showSecond,
               duration: transitionDuration,
               firstChild: Container(),
-              secondChild: Text(
+              secondChild: const Text(
                 'LIPKART',
                 style: TextStyle(
                   color: Colors.yellow,

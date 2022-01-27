@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -17,14 +16,23 @@ const images = [
 const headings = ["Cash On Delivery", "Fast Delivery", "Good Customer Service"];
 
 class FlowPager extends StatefulWidget {
+  const FlowPager({Key? key}) : super(key: key);
+
   @override
   _FlowPagerState createState() => _FlowPagerState();
 }
 
-class _FlowPagerState extends State<FlowPager> {
-  ValueNotifier<double> _notifier = ValueNotifier(0.0);
+class _FlowPagerState extends State<FlowPager>
+    with SingleTickerProviderStateMixin {
+  final ValueNotifier<double> _notifier = ValueNotifier(0.0);
   final _button = GlobalKey();
   final _pageController = PageController();
+  late final AnimationController _controller =
+      AnimationController(vsync: this, duration: const Duration(seconds: 3))
+        ..repeat(reverse: true);
+  late final Animation<Offset> _animation = Tween(
+          begin: Offset.zero, end: const Offset(0, 0.08))
+      .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
   @override
   void initState() {
@@ -38,20 +46,22 @@ class _FlowPagerState extends State<FlowPager> {
   void dispose() {
     _pageController.dispose();
     _notifier.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     String imagePicker(int idx) {
-      if (idx == 0)
+      if (idx == 0) {
         return "assets/cash.png";
-      else if (idx == 1)
+      } else if (idx == 1) {
         return "assets/delivery.png";
-      else if (idx == 2)
+      } else if (idx == 2) {
         return "assets/cash.png";
-      else
+      } else {
         return "assets/cash.png";
+      }
     }
 
     return Scaffold(
@@ -80,20 +90,24 @@ class _FlowPagerState extends State<FlowPager> {
                   padding: const EdgeInsets.only(top: 50),
                   child: Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 300,
-                        child: Image(
-                          image: AssetImage(imagePicker(i)),
-                          alignment: Alignment.bottomCenter,
+                        child: SlideTransition(
+                          position: _animation,
+                          child: Image(
+                            image: AssetImage(imagePicker(i)),
+                            alignment: Alignment.bottomCenter,
+                          ),
                         ),
                       ),
+                      const SizedBox(height: 10),
                       Text(headings[i],
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.cutiveMono(
-                            fontSize: 40,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                          ))
+                          style: GoogleFonts.roboto(
+                              fontSize: 40,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontStyle: FontStyle.italic))
                     ],
                   )),
             ),
@@ -174,9 +188,10 @@ class FlowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final screen = MediaQuery.of(context).size;
-    if (_renderBox == null)
+    if (_renderBox == null) {
       _renderBox = target.currentContext?.findRenderObject() as RenderBox;
-    if (_renderBox == null || notifier == null) return;
+    }
+    if (_renderBox == null) return;
     final page = notifier.value.floor();
     final animatorVal = notifier.value - page;
     final targetPos = _renderBox!.localToGlobal(Offset.zero);
