@@ -114,11 +114,19 @@ class _FlowPagerState extends State<FlowPager>
           ),
 
           // Anchor Button
-          IgnorePointer(
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 50),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 50),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    print("next page");
+                    _pageController.nextPage(
+                        duration: Duration(milliseconds: 500),
+                        curve: Curves.decelerate);
+                  });
+                },
                 child: ClipOval(
                   child: AnimatedBuilder(
                     animation: _notifier,
