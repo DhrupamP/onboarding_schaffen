@@ -8,12 +8,20 @@ const items = [
   Color(0xff037CD5),
 ];
 
+const txtcolor = [Colors.black, Colors.white, Colors.black, Colors.white];
+
 const images = [
   "assets/cash.png"
       "assets/delivery.png"
-      "assets/cash.png"
+      "assets/customer.png"
 ];
 const headings = ["Cash On Delivery", "Fast Delivery", "Good Customer Service"];
+
+const content = [
+  "We provide cash on delivery option on everything thing you order.",
+  "Fastest delivery across the country guaranteed.",
+  "24/7 customer service. Contact us anytime from anywhere."
+];
 
 class FlowPager extends StatefulWidget {
   const FlowPager({Key? key}) : super(key: key);
@@ -58,7 +66,7 @@ class _FlowPagerState extends State<FlowPager>
       } else if (idx == 1) {
         return "assets/delivery.png";
       } else if (idx == 2) {
-        return "assets/cash.png";
+        return "assets/customer.png";
       } else {
         return "assets/cash.png";
       }
@@ -87,29 +95,45 @@ class _FlowPagerState extends State<FlowPager>
             itemBuilder: (c, i) => Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                  padding: const EdgeInsets.only(top: 50),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 300,
-                        child: SlideTransition(
-                          position: _animation,
-                          child: Image(
-                            image: AssetImage(imagePicker(i)),
-                            alignment: Alignment.bottomCenter,
-                          ),
+                padding: const EdgeInsets.only(top: 50),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 300,
+                      child: SlideTransition(
+                        position: _animation,
+                        child: Image(
+                          image: AssetImage(imagePicker(i)),
+                          alignment: Alignment.bottomCenter,
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Text(headings[i],
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.roboto(
-                              fontSize: 40,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontStyle: FontStyle.italic))
-                    ],
-                  )),
+                    ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        headings[i],
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.actor(
+                            fontSize: 40,
+                            color: txtcolor[i],
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.italic),
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Text(
+                      content[i],
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                      style: GoogleFonts.dmSans(
+                        fontSize: 30,
+                        color: txtcolor[i],
+                      ),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
 
@@ -123,7 +147,7 @@ class _FlowPagerState extends State<FlowPager>
                   setState(() {
                     print("next page");
                     _pageController.nextPage(
-                        duration: Duration(milliseconds: 500),
+                        duration: Duration(milliseconds: 700),
                         curve: Curves.decelerate);
                   });
                 },
