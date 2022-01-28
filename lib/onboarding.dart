@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'name_page.dart';
+
+int index = 0;
 
 const items = [
   Color(0xffF7E830),
@@ -127,7 +130,7 @@ class _FlowPagerState extends State<FlowPager>
                       textAlign: TextAlign.center,
                       softWrap: true,
                       style: GoogleFonts.dmSans(
-                        fontSize: 30,
+                        fontSize: 25,
                         color: txtcolor[i],
                       ),
                     )
@@ -144,11 +147,36 @@ class _FlowPagerState extends State<FlowPager>
               padding: const EdgeInsets.only(bottom: 50),
               child: GestureDetector(
                 onTap: () {
+                  if (index == 2) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => NamePage()),
+                        (route) => false);
+                    // Navigator.pushAndRemoveUntil(
+                    //     context,
+                    //     PageRouteBuilder(transitionsBuilder:
+                    //         (context, animation, secondaryAnimation, child) {
+                    //       final tween =
+                    //           Tween(begin: Offset(0, 1.0), end: Offset.zero);
+                    //       final offsetAnimation = animation.drive(tween);
+                    //       return SlideTransition(
+                    //         position: _animation,
+                    //         child: NamePage(),
+                    //       );
+                    //     }, pageBuilder: (BuildContext context,
+                    //         Animation<double> animation,
+                    //         Animation<double> secondaryAnimation) {
+                    //       return NamePage();
+                    //     }),
+                    //     (route) => false);
+                  }
                   setState(() {
                     print("next page");
+                    print(index);
                     _pageController.nextPage(
-                        duration: Duration(milliseconds: 700),
+                        duration: Duration(milliseconds: 500),
                         curve: Curves.decelerate);
+                    index++;
                   });
                 },
                 child: ClipOval(
