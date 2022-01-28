@@ -13,13 +13,15 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  //Timers
   void startTimer() {
+    //timer for flipkart
     Timer(const Duration(milliseconds: 1500), () {
       setState(() {
         condition = true;
       });
     });
-
+    //timer for total splashscreen
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (BuildContext context) {
@@ -42,6 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            //Logo Animation
             Center(
               child: AnimatedContainer(
                 curve: Curves.fastOutSlowIn,
@@ -55,6 +58,8 @@ class _SplashScreenState extends State<SplashScreen> {
             const SizedBox(
               width: 7,
             ),
+
+            //Text Animation with logo
             AnimatedCrossFade(
               firstCurve: Curves.fastOutSlowIn,
               crossFadeState: !condition

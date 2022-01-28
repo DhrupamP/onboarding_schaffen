@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'name_page.dart';
+import 'namepage.dart';
 
-int index = 0;
-
+//background colors
 const items = [
   Color(0xffF7E830),
   Color(0xff037CD5),
@@ -11,15 +10,27 @@ const items = [
   Color(0xff037CD5),
 ];
 
+//page index
+int idx = 0;
+
+//Text Colors
 const txtcolor = [Colors.black, Colors.white, Colors.black, Colors.white];
 
+//Images
 const images = [
   "assets/cash.png"
       "assets/delivery.png"
       "assets/customer.png"
 ];
-const headings = ["Cash On Delivery", "Fast Delivery", "Good Customer Service"];
 
+//heading
+const headings = [
+  "Cash On Delivery",
+  "Fast Delivery",
+  "Excellent Customer Service"
+];
+
+//content
 const content = [
   "We provide cash on delivery option on everything thing you order.",
   "Fastest delivery across the country guaranteed.",
@@ -38,6 +49,8 @@ class _FlowPagerState extends State<FlowPager>
   final ValueNotifier<double> _notifier = ValueNotifier(0.0);
   final _button = GlobalKey();
   final _pageController = PageController();
+
+  //hover effect
   late final AnimationController _controller =
       AnimationController(vsync: this, duration: const Duration(seconds: 3))
         ..repeat(reverse: true);
@@ -93,52 +106,58 @@ class _FlowPagerState extends State<FlowPager>
 
           // PageView
           PageView.builder(
-            controller: _pageController,
-            itemCount: items.length - 1,
-            itemBuilder: (c, i) => Align(
-              alignment: Alignment.topCenter,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 300,
-                      child: SlideTransition(
-                        position: _animation,
-                        child: Image(
-                          image: AssetImage(imagePicker(i)),
-                          alignment: Alignment.bottomCenter,
+              controller: _pageController,
+              itemCount: items.length - 1,
+              itemBuilder: (c, i) {
+                idx = i;
+                print(idx);
+                return Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 50),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 300,
+                          //slidetransition for hovering of image
+                          child: SlideTransition(
+                            position: _animation,
+                            child: Image(
+                              image: AssetImage(imagePicker(i)),
+                              alignment: Alignment.bottomCenter,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        headings[i],
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.actor(
-                            fontSize: 40,
+                        const SizedBox(height: 10),
+                        //Headings
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            headings[i],
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.actor(
+                                fontSize: 40,
+                                color: txtcolor[i],
+                                fontWeight: FontWeight.bold,
+                                fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        const SizedBox(height: 40),
+                        //content
+                        Text(
+                          content[i],
+                          textAlign: TextAlign.center,
+                          softWrap: true,
+                          style: GoogleFonts.dmSans(
+                            fontSize: 30,
                             color: txtcolor[i],
-                            fontWeight: FontWeight.bold,
-                            fontStyle: FontStyle.italic),
-                      ),
+                          ),
+                        )
+                      ],
                     ),
-                    const SizedBox(height: 40),
-                    Text(
-                      content[i],
-                      textAlign: TextAlign.center,
-                      softWrap: true,
-                      style: GoogleFonts.dmSans(
-                        fontSize: 25,
-                        color: txtcolor[i],
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ),
-          ),
+                  ),
+                );
+              }),
 
           // Anchor Button
           Align(
@@ -147,36 +166,17 @@ class _FlowPagerState extends State<FlowPager>
               padding: const EdgeInsets.only(bottom: 50),
               child: GestureDetector(
                 onTap: () {
-                  if (index == 2) {
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => NamePage()),
-                        (route) => false);
-                    // Navigator.pushAndRemoveUntil(
-                    //     context,
-                    //     PageRouteBuilder(transitionsBuilder:
-                    //         (context, animation, secondaryAnimation, child) {
-                    //       final tween =
-                    //           Tween(begin: Offset(0, 1.0), end: Offset.zero);
-                    //       final offsetAnimation = animation.drive(tween);
-                    //       return SlideTransition(
-                    //         position: _animation,
-                    //         child: NamePage(),
-                    //       );
-                    //     }, pageBuilder: (BuildContext context,
-                    //         Animation<double> animation,
-                    //         Animation<double> secondaryAnimation) {
-                    //       return NamePage();
-                    //     }),
-                    //     (route) => false);
-                  }
                   setState(() {
-                    print("next page");
-                    print(index);
-                    _pageController.nextPage(
-                        duration: Duration(milliseconds: 500),
-                        curve: Curves.decelerate);
-                    index++;
+                    if (idx == 2) {
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return NamePage();
+                      }));
+                    } else {
+                      _pageController.nextPage(
+                          duration: Duration(milliseconds: 500),
+                          curve: Curves.decelerate);
+                    }
                   });
                 },
                 child: ClipOval(
@@ -231,6 +231,7 @@ class _FlowPagerState extends State<FlowPager>
   }
 }
 
+//FlowPainter
 class FlowPainter extends CustomPainter {
   final BuildContext context;
   final ValueNotifier<double> notifier;
