@@ -170,11 +170,11 @@ class _FlowPagerState extends State<FlowPager>
                     if (idx == 2) {
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (BuildContext context) {
-                        return NamePage();
+                        return const NamePage();
                       }));
                     } else {
                       _pageController.nextPage(
-                          duration: Duration(milliseconds: 500),
+                          duration: const Duration(milliseconds: 500),
                           curve: Curves.decelerate);
                     }
                   });
@@ -249,9 +249,7 @@ class FlowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final screen = MediaQuery.of(context).size;
-    if (_renderBox == null) {
-      _renderBox = target.currentContext?.findRenderObject() as RenderBox;
-    }
+    _renderBox ??= target.currentContext?.findRenderObject() as RenderBox;
     if (_renderBox == null) return;
     final page = notifier.value.floor();
     final animatorVal = notifier.value - page;
@@ -264,8 +262,8 @@ class FlowPainter extends CustomPainter {
     Rect buttonRect, bgRect = Rect.fromLTWH(0, 0, screen.width, screen.height);
 
     if (animatorVal < 0.5) {
-      bgPaint..color = colors[page % colors.length];
-      buttonPaint..color = colors[(page + 1) % colors.length];
+      bgPaint.color = colors[page % colors.length];
+      buttonPaint.color = colors[(page + 1) % colors.length];
       buttonRect = Rect.fromLTRB(
         targetPos.dx - (xScale * curvedVal), //left
         targetPos.dy - (yScale * curvedVal), //top
@@ -273,8 +271,8 @@ class FlowPainter extends CustomPainter {
         targetPos.dy + _renderBox!.size.height + (yScale * curvedVal), //bottom
       );
     } else {
-      bgPaint..color = colors[(page + 1) % colors.length];
-      buttonPaint..color = colors[page % colors.length];
+      bgPaint.color = colors[(page + 1) % colors.length];
+      buttonPaint.color = colors[page % colors.length];
       buttonRect = Rect.fromLTRB(
         targetPos.dx + _renderBox!.size.width * reverseVal, //left
         targetPos.dy - yScale * reverseVal, //top
